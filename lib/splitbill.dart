@@ -15,7 +15,7 @@ class _SplitBillState extends State<SplitBill> {
   String tax ="0";
   int friends=180;
   String bill="";
-  double result=0;
+  // double result=0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -206,8 +206,7 @@ class _SplitBillState extends State<SplitBill> {
                 Padding(
                   padding: const EdgeInsets.only(left:3,right:3),
                   child: ElevatedButton(onPressed: (){
-                    SplitLogic calculate= SplitLogic(tip: tip, friends: friends, tax: tax, bill: bill, result: result);
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=>Result(result: calculate.splitCalculation(), bill: bill, friends: friends.toString(), tax: tax, tip: tip.toString())));
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>Result(bill: bill, friends: friends.round().toString(), tax: tax, tip: tip.toString())));
 
                   },
                     style: ElevatedButton.styleFrom(
@@ -253,23 +252,23 @@ class _SplitBillState extends State<SplitBill> {
                 );
   }
 }
-class SplitLogic {
-  late final int tip, friends;
-  late final String bill, tax;
-  late double taxAmount;
-  late double result;
-
-  SplitLogic({required this.tip, required this.friends, required this.tax, required this.bill, required this.result,});
-
-  String splitCalculation() {
-    double billAmount = double.tryParse(bill) ?? 0.0;
-    double taxPercentage = double.tryParse(tax) ?? 0.0;
-
-    taxAmount = (billAmount * taxPercentage) / 100;
-
-    result = (billAmount + taxAmount + tip) / friends;
-    return result.toStringAsFixed(1);
-  }
-}
+// class SplitLogic {
+//   late final int tip, friends;
+//   late final String bill, tax;
+//   late double taxAmount;
+//   late double result;
+//
+//   SplitLogic({required this.tip, required this.friends, required this.tax, required this.bill, required this.result,});
+//
+//   String splitCalculation() {
+//     double billAmount = double.parse(bill) ;
+//     double taxPercentage = double.parse(tax) ;
+//
+//     taxAmount = (billAmount * taxPercentage) / 100;
+//
+//     result = (billAmount + taxAmount + tip) / friends;
+//     return result.toStringAsFixed(1);
+//   }
+// }
 
 

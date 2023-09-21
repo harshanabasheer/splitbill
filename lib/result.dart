@@ -2,14 +2,28 @@ import 'package:flutter/material.dart';
 import 'package:splitbill/splitbill.dart';
 import 'dart:math';
 
-class Result extends StatelessWidget {
-  // const Result({super.key});
+class Result extends StatefulWidget {
+  final String bill,friends,tax,tip;
+  Result({required this.bill, required this.friends, required this.tax, required this.tip});
 
-  final String result,bill,friends,tax,tip;
+  @override
+  State<Result> createState() => _ResultState();
+}
 
+class _ResultState extends State<Result> {
+  String payamount = "";
+  void initState() {
+    super.initState();
+    calculatePayAmount();
+  }
 
-  Result({ required this.result, required this.bill, required this.friends, required this.tax, required this.tip});
-
+  void calculatePayAmount() {
+    double taxAmount = double.parse(widget.bill) * double.parse(widget.tax) / 100;
+    double finalBill = (double.parse(widget.bill) + taxAmount + double.parse(widget.tip)) / double.parse(widget.friends);
+    setState(() {
+      payamount = finalBill.toStringAsFixed(2);
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,7 +50,7 @@ class Result extends StatelessWidget {
                             Column(
                               children: [
                                 Text("Equaly Devided",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20,color: Colors.black,)),
-                                Text("\$${bill}",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20,color: Colors.black,)),
+                                Text("\$${widget.bill}",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20,color: Colors.black,)),
                               ],
                             ),
                             SizedBox(width: 100,),
@@ -50,9 +64,9 @@ class Result extends StatelessWidget {
                             SizedBox(width: 50,),
                             Column(
                               children: [
-                                Text(friends,style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20,color: Colors.black,)),
-                                Text("$tax%",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20,color: Colors.black,)),
-                                Text("\$${tip}",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20,color: Colors.black,)),
+                                Text(widget.friends,style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20,color: Colors.black,)),
+                                Text("${widget.tax}%",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20,color: Colors.black,)),
+                                Text("\$${widget.tip}",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20,color: Colors.black,)),
                               ],
                             ),
                           ],
@@ -63,7 +77,7 @@ class Result extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 20,),
-                  Text("Everybody should pay \$${result}",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20,color: Colors.black,)),
+                  Text("Everybody should pay \$${payamount}",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20,color: Colors.black,)),
                   SizedBox(height: 50,),
                   ElevatedButton(onPressed: (){
                     Navigator.push(context, MaterialPageRoute(builder: (context)=>SplitBill()));
